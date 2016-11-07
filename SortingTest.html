@@ -3,6 +3,7 @@
     <head>
         <title>Sorting TestL</title>
         <link rel="stylesheet" href="main.css">
+        <meta charset="utf-8" />
     </head>
     <body>
     <div>
@@ -17,7 +18,7 @@
             </p>
                 <p>Ex: <strong>u = [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]</strong>
                 1 gives 3 and 4, then 3 gives 7 and 10, 4 gives 9 and 13, then 7 gives 15 and 22 and so on...</p>
-            <P>Given parameter <strong>n</strong> the function <strong>dblLinear</strong> returns the element <strong>u(n)</strong> of the ordered (with min...max) sequence <strong>u</strong>.</P>
+            <p>Given parameter <strong>n</strong> the function <strong>dblLinear</strong> returns the element <strong>u(n)</strong> of the ordered (with min...max) sequence <strong>u</strong>.</p>
             <ul>
                 <li>dbl_linear(10) should return 22</li>
                 <li>Focus attention on efficiency.</li>
@@ -46,10 +47,10 @@
         </div>
     </div>
     </body>
-        
+
     <script>
         var brTestova = 0;
-        
+
         // Prva verzija koju sam napisao. Mnoogo je spora i ne pristupa problemu na pravi nacin.
         function dblLinearSlow(n) {
             if (n >= 1500) return -1; // znaci da je mnooogo sporo
@@ -62,7 +63,7 @@
                 //Bubble Sort samo drugu polovinu niza
                 for(counter = Math.floor(u.length/2); counter < u.length-1; counter += 1){
                   for(walker = counter+1; walker < u.length; walker +=1){
-                    if(u[walker] === u[counter]) { 
+                    if(u[walker] === u[counter]) {
                         u.splice(walker, 1);
                         continue;
                     };
@@ -79,7 +80,7 @@
             if (document.getElementById("liste").style.visibility != "visible") document.getElementById("liste").style.visibility = "visible";
             return u[n];
         };
-        
+
         // Druga verzija. Mnooogo je brza od prve ali i dalje mislim da nije pravi pristup.
         function dblLinearFast(n) {
             var index = 0, u = [1], oldn = 0, oldern = 0;
@@ -137,7 +138,7 @@
             if (document.getElementById("liste").style.visibility != "visible") document.getElementById("liste").style.visibility = "visible";
             return u[n];
         };
-        
+
         // Treca verzija. Najbrza je i izgleda da je tu negde pravi put.
         function dblLinearRev(n) {
             var u = [1], t = [], i = 0, counter = 0, oldn = 0, oldern = 0, nasao1 = 0, nasao2 = 0;
@@ -151,7 +152,7 @@
                 // sa proverom duplikata.
                 for(counter = u.length-3; counter > Math.floor(u.length/2); counter -= 1){
                     if ((counter < 0) || (nasao1 && nasao2)) break;
-                    
+
                     if (!nasao1 && (u[u.length-2] < u[counter]) && (u[u.length-2] > u[counter-1])) {
                         u.splice(counter, 0, u[u.length-2]);
                         u.splice(u.length-2, 1);
@@ -161,7 +162,7 @@
                         u.splice(u.length-2, 1);
                         nasao1 = 1;
                         if (nasao1 && nasao2) break; };
-                             
+
                     if (!nasao2 && (u[u.length-1] < u[counter]) && (u[u.length-1] > u[counter-1])) {
                         u.splice(counter, 0, u[u.length-1]);
                         u.splice(u.length-1, 1);
@@ -171,9 +172,9 @@
                         u.splice(u.length-1, 1);
                         nasao2 = 1;
                         if (nasao1 && nasao2) break;};
-                    
+
                 };
-                
+
                 if (u.length >= n+1) {
                     if ((u[n] === oldn) && (u[n] === oldern)) break;};
             }; // end osnovne petlje
@@ -236,19 +237,19 @@
             document.getElementById("resenja").style.visibility = "visible";
             document.getElementById("resenja").scrollIntoView();
         };
-    
+
         function enterGo(event){ if (event.keyCode === 13) clickGo(); };
-        
+
         function clickRandom(){
             brTestova++;/*
             var gen = "", tmpArr = [];
             for(var N = 2; N <= Math.floor(Math.random()*100000+1); N+=1 ){
                 tmpArr.push(Math.floor(Math.random()*2000+1)-1000); };
-        
+
             gen = tmpArr.join(", "); */
-            
+
             gen = Math.floor(Math.random()*69999+1);
-        
+
             document.getElementById("poljeZaUnos").value = gen;
             if (brTestova > 3){
                 document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;

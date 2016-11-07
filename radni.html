@@ -3,6 +3,7 @@
     <head>
         <title>Radni HTML</title>
         <link rel="stylesheet" href="main.css">
+        <meta charset="utf-8" />
     </head>
     <body>
     <div>
@@ -17,7 +18,7 @@
             </p>
                 <p>Ex: <strong>u = [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]</strong>
                 1 gives 3 and 4, then 3 gives 7 and 10, 4 gives 9 and 13, then 7 gives 15 and 22 and so on...</p>
-            <P>Given parameter <strong>n</strong> the function <strong>dblLinear</strong> returns the element <strong>u(n)</strong> of the ordered (with <) sequence <strong>u</strong>.</P>
+            <p>Given parameter <strong>n</strong> the function <strong>dblLinear</strong> returns the element <strong>u(n)</strong> of the ordered (with &lt;) sequence <strong>u</strong>.</p>
             <ul>
                 <li>dbl_linear(10) should return 22</li>
             </ul>
@@ -45,16 +46,16 @@
         </div>
     </div>
     </body>
-        
+
     <script>
         var brTestova = 0;
-        
+
         function solution(str){
             document.getElementById("unetiPodatak").innerHTML = str.toString();
             var vowelsCount = 0;
             return (str.length === 0)?0:vowelsCount = str.match(/[a|e|i|o|u]/ig).length;
         };
-        
+
         function dblLinearSlow(n) {
             if (n >= 1000) return -1;
             var u = [1], t = [], i = 0, counter = 0, walker = 0;
@@ -64,7 +65,7 @@
                 //Bubble sort samo drugu polovinu niza
                 for(counter = Math.floor(u.length/2); counter < u.length-1; counter += 1){
                   for(walker = counter+1; walker < u.length; walker +=1){
-                    if(u[walker] === u[counter]) { 
+                    if(u[walker] === u[counter]) {
                         u.splice(walker, 1);
                         continue;
                     };
@@ -80,7 +81,7 @@
             if (document.getElementById("liste").style.visibility != "visible") document.getElementById("liste").style.visibility = "visible";
             return u[n];
         };
-        
+
         function dblLinearFast(n) {
             var index = 0, u = [1], oldn = 0, oldern = 0;
             for(index = 1; index < n; index += 1){
@@ -136,7 +137,7 @@
             if (document.getElementById("liste").style.visibility != "visible") document.getElementById("liste").style.visibility = "visible";
             return u[n];
         };
-        
+
         function clickGo(){
             var unetiString = function cleanup(str){
                 return (str.trim().charAt(str.trim().length-1) === ",")?cleanup(str.trim().slice(0, str.trim().length-1)): str.trim();
@@ -154,18 +155,18 @@
             document.getElementById("resenja").style.visibility = "visible";
             document.getElementById("resenja").scrollIntoView;
         };
-    
+
         function enterGo(event){ if (event.keyCode === 13) clickGo(); };
-        
+
         function clickRandom(){/*
         brTestova++;
         var gen = "", tmpArr = [];
         for(var N = 2; N <= Math.floor(Math.random()*100000+1); N+=1 ){
             tmpArr.push(Math.floor(Math.random()*2000+1)-1000);
         };
-        
+
         gen = tmpArr.join(", ");
-        
+
         document.getElementById("poljeZaUnos").value = tmpArr;
         if (brTestova >= 3){
             for(t = 1; t < 2 ; t++){

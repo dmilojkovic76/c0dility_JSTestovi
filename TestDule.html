@@ -1,5 +1,9 @@
+<!DOCTYPE html>
 <html>
-	<head></head>
+	<head>
+		<meta charset="utf-8">
+		<title>Prvi test</title>
+	</head>
 	<body>
 		<button>Ivan</button>
 		<button>Dusan</button>
@@ -9,8 +13,8 @@
 	</body>
 	<script type="text/javascript">
 	(function(){
-	
-	var buttons = document.getElementsByTagName('button');
+
+	var buttons = document.getElementsByTagName('button'), j=0;
 	for(var i = 0; i < buttons.length; i++){
 		buttons[i].onclick = function(j) { return function() { alerter(this.innerHTML + " " + (j+1)); }; } (i);
 	}
@@ -18,8 +22,8 @@
 	function alerter(tekst){
 		alert(tekst);
 	}
-	
+
 	})();
-	
+
 	</script>
 </html>

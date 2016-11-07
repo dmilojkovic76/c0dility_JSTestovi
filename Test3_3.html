@@ -3,6 +3,7 @@
     <head>
         <title>Test 3-3 - PermMissingElem</title>
         <link rel="stylesheet" href="main.css">
+        <meta charset="utf-8" />
     </head>
     <body>
     <div>
@@ -18,7 +19,7 @@
                 <li>A[2] = 1</li>
                 <li>A[3] = 5</li></p>
                 <p>the function should return 4, as it is the missing element.</p>
-            <P>Assume that:</P>
+            <p>Assume that:</p>
             <ul>
                 <li>N is an integer within the range [0..100,000];</li>
                 <li>the elements of A are all distinct;</li>
@@ -45,10 +46,10 @@
         </div>
     </div>
     </body>
-        
+
     <script>
         var brTestova = 0;
-        
+
         function solution(A){
             document.getElementById("unetiPodatak").innerHTML = A.toString();
             var duzA = A.length;
@@ -66,7 +67,7 @@
                 else return noviIndex;
             }
         }
-        
+
         function clickGo(){
            var unetiString = function cleanup(str){
                 return (str.trim().charAt(str.trim().length-1) === ",")?cleanup(str.trim().slice(0, str.trim().length-1)): str.trim();
@@ -78,9 +79,9 @@
             document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1/10)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s";
             document.getElementById("resenja").style.visibility = "visible";
         }
-    
+
         function enterGo(event){ if (event.keyCode === 13) clickGo(); }
-        
+
         function clickRandom(){
             brTestova++;
             var gen = "", tmpArr = [], tmpArr2 = [];
@@ -93,7 +94,7 @@
                 tmpArr.push(tmpArr2.splice(Math.floor(Math.random()*tmpArr2.length), 1)[0]);
             }
             gen = tmpArr.toString();
-        
+
             document.getElementById("poljeZaUnos").value = tmpArr;
             if (brTestova > 3){
                 document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;

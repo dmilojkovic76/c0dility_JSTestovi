@@ -3,6 +3,7 @@
     <head>
         <title>Test 3-1 - TapeEquilibrium</title>
         <link rel="stylesheet" href="main.css">
+        <meta charset="utf-8" />
     </head>
     <body>
     <div>
@@ -10,7 +11,7 @@
             <h1>Test 3-1 - TapeEquilibrium</h1>
             <h4>Minimize the value |(A[0] + ... + A[P-1]) - (A[P] + ... + A[N-1])|.</h4>
             <p>A non-empty zero-indexed array A consisting of N integers is given. Array A represents numbers on a tape.</p>
-            <p>Any integer P, such that 0 < P < N, splits this tape into two non-empty parts: A[0], A[1], ..., A[P − 1] and A[P], A[P + 1], ..., A[N − 1].
+            <p>Any integer P, such that 0 &lt; P &lt; N, splits this tape into two non-empty parts: A[0], A[1], ..., A[P − 1] and A[P], A[P + 1], ..., A[N − 1].
             The difference between the two parts is the value of: |(A[0] + A[1] + ... + A[P − 1]) − (A[P] + A[P + 1] + ... + A[N − 1])|</p>
             <p>In other words, it is the absolute difference between the sum of the first part and the sum of the second part.</p>
             <p>For example, consider array A such that:
@@ -25,7 +26,7 @@
                 <li>P = 3, difference = |6 − 7| = 1</li>
                 <li>P = 4, difference = |10 − 3| = 7</li></p>
             <p>Given a non-empty zero-indexed array A of N integers, return the minimal difference that can be achieved.</p>
-            <P>Assume that:</P>
+            <p>Assume that:</p>
             <ul>
                 <li>N is an integer within the range [2..100,000]</li>
                 <li>each element of array A is an integer within the range [−1,000..1,000].</li>
@@ -51,10 +52,10 @@
         </div>
     </div>
     </body>
-        
+
     <script>
         var brTestova = 0;
-        
+
         function solution(A){
             document.getElementById("unetiPodatak").innerHTML = A.toString();
             document.getElementById("N").innerHTML = A.length;
@@ -69,7 +70,7 @@
             document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1/10)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s";
             return razlika;
         }
-        
+
         function clickGo(){
             var unetiString = function cleanup(str){
                 return (str.trim().charAt(str.trim().length-1) === ",")?cleanup(str.trim().slice(0, str.trim().length-1)): str.trim();
@@ -79,18 +80,18 @@
             document.getElementById("resenja").style.visibility = "visible";
             document.getElementById("resultat").scrollIntoView();
         }
-    
+
         function enterGo(event){ if (event.keyCode === 13) clickGo(); }
-        
+
         function clickRandom(){
         brTestova++;
         var gen = "", tmpArr = [];
         for(var N = 2; N <= Math.floor(Math.random()*100000+1); N+=1 ){
             tmpArr.push(Math.floor(Math.random()*2000+1)-1000);
         }
-        
+
         gen = tmpArr.join(", ");
-        
+
         document.getElementById("poljeZaUnos").value = tmpArr;
         if (brTestova > 3){
                 document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;

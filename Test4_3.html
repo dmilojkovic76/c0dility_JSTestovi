@@ -3,6 +3,7 @@
     <head>
         <title>Test 4-3 - MissingInteger</title>
         <link rel="stylesheet" href="main.css">
+        <meta charset="utf-8" />
     </head>
     <body>
     <div>
@@ -18,7 +19,7 @@
 				<li>A[4] = 1</li>
 				<li>A[5] = 2</li>
                 the function should return 5.</p>
-            <P>Assume that:
+            <p>Assume that:
             <ul>
                 <li>N is an integer within the range [1..100,000]</li>
                 <li>each element of array A is an integer within the range [−2,147,483,648..2,147,483,647].</li>
@@ -47,10 +48,10 @@
         </div>
     </div>
     </body>
-        
+
     <script>
         var brTestova = 0;
-        
+
         function solution(A) {
             if (A.length === 0) return 1;
             if (A.length === 1) {
@@ -65,11 +66,11 @@
                     return br == i;
                 })) {
                     continue;
-                } else return i;        
+                } else return i;
             }
             return max+1;
         }
-        
+
         function clickGo(){
             var unetiString = function cleanup(str){
                 return (str.trim().charAt(str.trim().length-1) === ",")?cleanup(str.trim().slice(0, str.trim().length-1)): str.trim();
@@ -81,9 +82,9 @@
             document.getElementById("resenja").style.visibility = "visible";
             document.getElementById("resultat").scrollIntoView();
         }
-    
+
         function enterGo(event){ if (event.keyCode === 13) clickGo(); }
-        
+
         function clickRandom(){
             brTestova++;
             var gen = "", tmpArr = [];
@@ -96,9 +97,9 @@
             for (var j = 12; j < 21; j++) {
                 tmpArr.push(j);
             }
-        
+
             gen = tmpArr.join(", ");
-        
+
             document.getElementById("poljeZaUnos").value = tmpArr;
             if (brTestova > 3){
                     document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
