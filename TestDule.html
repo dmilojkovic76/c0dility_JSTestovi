@@ -1,0 +1,25 @@
+<html>
+	<head></head>
+	<body>
+		<button>Ivan</button>
+		<button>Dusan</button>
+		<button>Beli</button>
+		<button>Maja</button>
+		<button>Irena</button>
+	</body>
+	<script type="text/javascript">
+	(function(){
+	
+	var buttons = document.getElementsByTagName('button');
+	for(var i = 0; i < buttons.length; i++){
+		buttons[i].onclick = function(j) { return function() { alerter(this.innerHTML + " " + (j+1)); }; } (i);
+	}
+
+	function alerter(tekst){
+		alert(tekst);
+	}
+	
+	})();
+	
+	</script>
+</html>

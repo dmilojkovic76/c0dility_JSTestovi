@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test 2-2 - OddOccurrencesInArray</title>
+        <link rel="stylesheet" href="main.css">
+    </head>
+    <body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 2-2 - OddOccurrencesInArray</h1>
+            <h4>Find value that occurs in odd number of elements.</h4>
+            <p>A non-empty zero-indexed array A consisting of N integers is given. The array contains an odd number of elements, and each element of the array can be paired with another element that has the same value, except for one element that is left unpaired.</p>
+            <p>Given an array A consisting of N integers fulfilling the above conditions, returns the value of the unpaired element.</p>
+            <P>Assume that:</P>
+            <ul>
+                <li>N is an odd integer within the range [1..1,000,000];</li>
+                <li>each element of array A is an integer within the range [1..1,000,000,000];</li>
+                <li>all but one of the values in A occur an even number of times.</li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom , : <input id="poljeZaUnos" onkeypress="enterGo(event)"><button onclick="clickGo()">GO!</button> <button onclick="clickRandom()">Insert Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+ <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Broj elemenata : <span id="N"></span>, rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+    </body>
+        
+    <script>
+    var brTestova = 0;
+        
+    function clickRandom(){
+        brTestova++;
+        var gen = "", tmpArr1 = [], tmpArr2 = [];
+        for(var N = 1; N <= Math.floor(Math.random()*1000000+1); N+=2 ){
+            tmpArr1.push(Math.floor(Math.random()*1000000000+1));
+        }
+        tmpArr2 = tmpArr1.slice(0, tmpArr1.length);
+        while (tmpArr1.length > 0){
+            var nasumicac = Math.floor(Math.random()*tmpArr1.length);
+            tmpArr2.splice(Math.floor(Math.random()*tmpArr2.length+1), 0, tmpArr1[nasumicac]);
+            tmpArr1.splice(nasumicac,1);
+        }
+        tmpArr2.splice(Math.floor(Math.random()*tmpArr2.length+1), 0, Math.floor(Math.random()*1000000000+1));
+        gen = tmpArr2.join(", ");
+        
+        document.getElementById("poljeZaUnos").value = gen;
+        if (brTestova > 3){
+                document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+                document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+                document.getElementById("test3").innerHTML = tmpArr.length + " - " + gen;
+            }
+        else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test"+brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test"+brTestova).innerHTML = tmpArr2.length + "-" + gen;
+            document.getElementById("testVrednosti").style.maxHeight = "100%";
+            document.getElementById("testVrednosti").style.visibility = "visible";
+        }
+    }
+    
+    function solution(A) {
+    document.getElementById("unetiPodatak").innerHTML = A.toString();
+    document.getElementById("N").innerHTML = A.length;
+    var vremePocetka = Date.now();
+        for (var j = 1; j < A.length; j++) {
+            if(A[0] === A[j]){
+                if ((Date.now())-vremePocetka > 5000) {
+                    alert("Predugo traje!\nPreko 5sec");
+                    break;
+                }
+                A.splice(j,1);
+                A.shift();
+                j = 0;
+            }
+        }
+    var vremeKraja = Date.now();
+    document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1/10)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s";
+    return A[0];
+    }
+        
+    function clickGo(){
+        var unetiString = function cleanup(str){
+            return (str.trim().charAt(str.trim().length-1) === ",")?cleanup(str.trim().slice(0, str.trim().length-1)): str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        document.getElementById("resenja").style.visibility = "visible";
+        document.getElementById("testVrednosti").style.maxHeight = "100%";
+        document.getElementById("resultat").scrollIntoView();
+    }
+    
+    function enterGo(event){ if (event.keyCode === 13) clickGo(); }
+    </script>
+</html>
