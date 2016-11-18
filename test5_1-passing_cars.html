@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 5-1 - PassingCars</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 5-1 - PassingCars</h1>
+            <h4>Count the number of passing cars on the road.</h4>
+            <p>A non-empty zero-indexed array A consisting of N integers is given. The consecutive elements of array A represent consecutive cars on a road.<br />
+              Array A contains only 0s and/or 1s:
+                <ul>
+                    <li>0 represents a car traveling east,</li>
+                    <li>1 represents a car traveling west.</li>
+                </ul>
+                The goal is to count passing cars. We say that a pair of cars (P, Q), where 0 &leq; P &lt; Q &lt; N, is passing when P is traveling to the east and Q is traveling to the west.<br />
+                For example, consider array A such that:
+                <ul>
+                    <li>A[0] = 0</li>
+                    <li>A[1] = 1</li>
+                    <li>A[2] = 0</li>
+                    <li>A[3] = 1</li>
+                    <li>A[4] = 1</li>
+                </ul>
+                We have five pairs of passing cars: (0, 1), (0, 3), (0, 4), (2, 3), (2, 4).
+            </p>
+            Writte a function: <code>function solution(A);</code>
+            <p>Given a non-empty zero-indexed array A of N integers, return the number of pairs of passing cars.<br />The function should return −1 if the number of pairs of passing cars exceeds 1,000,000,000.<br />For example given above: A[0,1,0,1,1], the function should return 5, as explained above.</p>
+            <p>Assume that:
+                <ul>
+                    <li>N is an integer within the range [1..100,000];</li>
+                    <li>each element of array A is an integer that can have one of the following values: 0, 1.</li>
+                </ul>
+            </p>
+            <p>Complexity:
+              <ul>
+                <li>expected worst-case time complexity is O(N);</li>
+                <li>expected worst-case space complexity is O(1), beyond input storage (not counting the storage required for input arguments). </li>
+              </ul>
+            </p>
+            <p>Elements of input arrays can be modified.</p>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom ',' za niz A: <input id="poljeZaUnos" onkeypress="enterGo(event)"><br /><button onclick="clickGo()">GO!</button> <button onclick="clickRandom(10)">Insert mali Random</button> <button onclick="clickRandom()">Insert full Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Broj elemenata : <span id="N"></span>, rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    function solution(A) {
+      var duzA = A.length, brojac = 0, rezultat = 0;
+
+      for (var i = 0; i < duzA; i++) {
+        if (A[i] == 0) {
+          brojac++;
+        } else {
+          rezultat += brojac;
+          if (rezultat > 1000000000) {
+            return -1;
+          }
+        }
+      }
+      return rezultat;
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resultat").scrollIntoView();
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var gen = "",
+            tmpArr = [];
+        for (var N = 1; N <= randBroj(1, 100000); N += 1) {
+            tmpArr.push(Math.round(Math.random()));
+        }
+
+        gen = tmpArr.join(", ");
+
+        document.getElementById("poljeZaUnos").value = tmpArr;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = tmpArr.length + "elem. - " + gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = tmpArr.length + "elem. - " + gen;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>

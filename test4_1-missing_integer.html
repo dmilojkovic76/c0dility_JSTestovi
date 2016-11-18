@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 4-1 - MissingInteger</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 4-1 - MissingInteger</h1>
+            <h4>Find the minimal positive integer not occurring in a given sequence.</h4>
+            <p>Given a non-empty zero-indexed array A of N integers, return the minimal positive integer (greater than 0) that does not occur in A.</p>
+            <p>For example, given:
+                <li>A[0] = 1</li>
+                <li>A[1] = 3</li>
+                <li>A[2] = 6</li>
+                <li>A[3] = 4</li>
+                <li>A[4] = 1</li>
+                <li>A[5] = 2</li>
+                the function should return 5.</p>
+            <p>Assume that:
+                <ul>
+                    <li>N is an integer within the range [1..100,000]</li>
+                    <li>each element of array A is an integer within the range [−2,147,483,648..2,147,483,647].</li>
+                </ul>
+            </p>
+            <p>Complexity:
+                <li>expected worst-case time complexity is O(N);</li>
+                <li>expected worst-case space complexity is O(N), beyond input storage (not counting the storage required for input arguments).</li>
+            </p>
+            <p>Elements of input arrays can be modified.</p>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom , : <input id="poljeZaUnos" onkeypress="enterGo(event)"><button onclick="clickGo()">GO!</button> <button onclick="clickRandom()">Insert Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Broj elemenata : <span id="N"></span>, rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    // /**
+    // * Finds minimal positive integer (greater than 0) that does not occur in A (Array).
+    // *
+    // * @param {Number[]} A An array of of integers.
+    // * @return {Number} Minimal positive integer in A.
+    // */
+    // function solution(A) {
+    // const length = A.length;
+    // const positives = [];
+    // let currentIndex;
+    //
+    // for(let i = 0; i < length; i++) {
+    // currentIndex = A[i] - 1;
+    // if(A[i] > 0 && positives[currentIndex] !== true) {
+    // positives[currentIndex] = true;
+    // }
+    // }
+    //
+    // const positivesLength = positives.length;
+    //
+    // for(let i = 0; i < positivesLength; i++) {
+    // if(positives[i] === undefined) {
+    // return i + 1;
+    // }
+    // }
+    //
+    // return positivesLength + 1;
+    // }
+
+    /** 66% reseno; Timeout error; 100% correctness; 25% Performance.
+     * Treba da ubrzam funkciju da bude O(N) a ne O(N**2) time complexity
+     */
+    function solution(A) {
+        var duzArr = A.length,
+            max = 0;
+        if (duzArr === 0) {
+            return 1;
+        }
+        if (duzArr === 1) {
+            return (A[0] === 1) ? 2 : 1;
+        }
+
+        // A.sort(function(a, b) {
+        //     return a - b
+        // });
+
+        // max = A[duzArr - 1];
+
+        //for (var i = 1; i <= max; i++) {
+        for (var i = 0; i <= duzArr; i++) {
+            if (A.some(function(br) {
+                    return br == i + 1;
+                })) {
+                continue;
+            } else return i + 1;
+        }
+        //return max + 1;
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        document.getElementById("unetiPodatak").innerHTML = unetiString;
+        document.getElementById("N").innerHTML = unetiString.split(',').length;
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resultat").scrollIntoView();
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var gen = "",
+            tmpArr = [];
+        // for(var N = 1; N <= randBroj(1, 100000)); N+=1 ){
+        //     tmpArr.push(randBroj(-2147483648, 2147483647));
+        // }
+        for (var i = 0; i < 11; i++) {
+            tmpArr.push(i);
+        }
+        for (var j = 12; j < 21; j++) {
+            tmpArr.push(j);
+        }
+
+        gen = tmpArr.join(", ");
+
+        document.getElementById("poljeZaUnos").value = tmpArr;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = tmpArr.length + "elem. - " + gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = tmpArr.length + "elem. - " + gen;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 5-2 - CountDivPassingCars</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 5-2 - CountDiv</h1>
+            <h4>Compute number of integers divisible by k in range [a..b]</h4>
+            <p>Write a function:</p>
+            <code>function solution(A, B, K);</code>
+            <p>that, given three integers A, B and K, returns the number of integers within the range [A..B] that are divisible by K, i.e.:</p>
+            <em>{ i : A ≤ i ≤ B, i mod K = 0 }</em>
+            <p>For example, for A = 6, B = 11 and K = 2, your function should return 3, because there are three numbers divisible by 2 within the range [6..11], namely 6, 8 and 10.</p>
+            <p>Assume that:
+                <ul>
+                    <li>A and B are integers within the range [0..2,000,000,000];</li>
+                    <li>K is an integer within the range [1..2,000,000,000];</li>
+                    <li>A &leq; B</li>
+                </ul>
+            </p>
+            <p>Complexity:
+              <ul>
+                <li>expected worst-case time complexity is O(1);</li>
+                <li>expected worst-case space complexity is O(1).</li>
+              </ul>
+            </p>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom ',' za niz A: <input id="poljeZaUnos" onkeypress="enterGo(event)"><br /><button onclick="clickGo()">GO!</button> <button onclick="clickRandom(10)">Insert mali Random</button> <button onclick="clickRandom()">Insert full Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Broj elemenata : <span id="N"></span>, rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    function solution(A) {
+      return 1;
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resultat").scrollIntoView();
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var gen = "",
+            tmpArr = [];
+        for (var N = 1; N <= randBroj(1, 100000); N += 1) {
+            tmpArr.push(Math.round(Math.random()));
+        }
+
+        gen = tmpArr.join(", ");
+
+        document.getElementById("poljeZaUnos").value = tmpArr;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = tmpArr.length + "elem. - " + gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = tmpArr.length + "elem. - " + gen;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>

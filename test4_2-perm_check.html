@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 4-2 - PermCheck</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 4-2 - PermCheck</h1>
+            <h4>Check whether array A is a permutation.</h4>
+            <p>A non-empty zero-indexed array A consisting of N integers is given.<br /> A permutation is a sequence containing each element from 1 to N once, and only once.</p>
+            <p>For example, array A such that:
+                <li>A[0] = 4</li>
+                <li>A[1] = 1</li>
+                <li>A[2] = 3</li>
+                <li>A[3] = 2</li>
+                is a permutation, but array A such that:
+                <li>A[0] = 4</li>
+                <li>A[1] = 1</li>
+                <li>A[2] = 3</li>
+                is not a permutation, because value 2 is missing.</p>
+            <p>Given a zero-indexed array A, return 1 if array A is a permutation and 0 if it is not.</p>
+            <p>Assume that:
+                <ul>
+                    <li>N is an integer within the range [1..100,000]</li>
+                    <li>each element of array A is an integer within the range [1..1,000,000,000].</li>
+                </ul>
+            </p>
+            <p>Complexity:
+                <li>expected worst-case time complexity is O(N);</li>
+                <li>expected worst-case space complexity is O(N), beyond input storage (not counting the storage required for input arguments).</li>
+            </p>
+            <p>Elements of input arrays can be modified.</p>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom , : <input id="poljeZaUnos" onkeypress="enterGo(event)"><button onclick="clickGo()">GO!</button> <button onclick="clickRandom()">Insert Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Broj elemenata : <span id="N"></span>, rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    /** 60% reseno; Timeout Error; 100% Correctness; 20% Performance.
+     * Treba da ubrzam funkciju da bude O(N) a ne O(N**2) time complexity.
+     * Moze da se koristi sledeca precica tj. formula za brzo racunanje sume:
+     * PERMCHECK PSEUDO CODE:
+     * 1- in one iteration count min number, max number and sum
+     * 2- Now we only need to check only if sum of min to max is equal to the sum we just calculated,
+     *    for this return 1 only if sum == ( ((min+max)/2)*(max-min+1) )
+     * ==================
+     * We used the formula of sum from m to n which is : ((m+n)/2) * (n-m+1)
+     * for example sum from 1 to 4 is : ((1+4)/2) * (4-1+1) = 10
+     */
+    function solution(A) {
+        var duzArr = A.length,
+            min = Number.MAX_VALUE,
+            max = Number.MIN_VALUE,
+            arrSum = 0,
+            trueSum = 0,
+            tmpArr = [];
+        if (duzArr === 0) {
+            return 0;
+        }
+        if (duzArr === 1) {
+            return (A[0] === 1) ? 1 : 0;
+        }
+
+        for (var i = 0; i < duzArr; i += 1) {
+            if (tmpArr.some(function(br) {
+                    return A[i] === br;
+                })) {
+                return 0;
+            }
+            min = Math.min(A[i], min);
+            max = Math.max(A[i], max);
+            arrSum += parseInt(A[i]);
+            tmpArr.push(A[i]);
+        }
+
+        for (var i = 1; i <= max; i += 1) {
+            trueSum += i;
+        }
+
+        return (trueSum === arrSum) ? 1 : 0;
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resultat").scrollIntoView();
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var gen = "",
+            tmpArr = [];
+        for (var N = 2; N <= randBroj(1, 100000); N += 1) {
+            tmpArr.push(randBroj(1, 1000000000));
+        }
+
+        gen = tmpArr.join(", ");
+
+        document.getElementById("poljeZaUnos").value = tmpArr;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = tmpArr.length + " - " + gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = tmpArr.length + "-" + gen;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>

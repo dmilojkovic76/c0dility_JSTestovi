@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Sorting TestL</title>
-        <link rel="stylesheet" href="main.css">
-        <meta charset="utf-8" />
-    </head>
-    <body>
+
+<head>
+    <title>Sorting Test</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
     <div>
         <div id="postavka" class="postavka">
             <h1>Sorting Test</h1>
@@ -16,8 +18,7 @@
                 <li>For each <strong>x</strong> in <strong>u</strong>, then <strong>y = 2 * x + 1</strong> and <strong>z = 3 * x + 1</strong> must be in <strong>u</strong> too.</li>
                 <li>There are no other numbers in <strong>u</strong>.</li>
             </p>
-                <p>Ex: <strong>u = [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]</strong>
-                1 gives 3 and 4, then 3 gives 7 and 10, 4 gives 9 and 13, then 7 gives 15 and 22 and so on...</p>
+            <p>Ex: <strong>u = [1, 3, 4, 7, 9, 10, 13, 15, 19, 21, 22, 27, ...]</strong> 1 gives 3 and 4, then 3 gives 7 and 10, 4 gives 9 and 13, then 7 gives 15 and 22 and so on...</p>
             <p>Given parameter <strong>n</strong> the function <strong>dblLinear</strong> returns the element <strong>u(n)</strong> of the ordered (with min...max) sequence <strong>u</strong>.</p>
             <ul>
                 <li>dbl_linear(10) should return 22</li>
@@ -32,7 +33,7 @@
         <div id="testVrednosti" class="testVrednosti">
             <h4>Neke generisane vrednosti (poslednje 3):</h4>
             <ul id="listaVrednosti" class="listaVrednosti">
- <!--              <li id="test1...test5"></li> -->
+                <!--              <li id="test1...test5"></li> -->
             </ul>
             <div class="fadeoutVrednosti"></div>
         </div>
@@ -46,222 +47,264 @@
             <div class="fadeoutResenja"></div>
         </div>
     </div>
-    </body>
+</body>
 
-    <script>
-        var brTestova = 0;
+<script>
+    var brTestova = 0;
 
-        // Prva verzija koju sam napisao. Mnoogo je spora i ne pristupa problemu na pravi nacin.
-        function dblLinearSlow(n) {
-            if (n >= 1500) return -1; // znaci da je mnooogo sporo
-            var u = [1], t = [], i = 0, counter = 0, walker = 0, oldn = 0, oldern = 0;
-            for(i = 1; i < n; i += 1){
-              u.push(2*u[i-1]+1);
-              u.push(3*u[i-1]+1);
-                    oldern = oldn;
-                    oldn = u[n];
-                //Bubble Sort samo drugu polovinu niza
-                for(counter = Math.floor(u.length/2); counter < u.length-1; counter += 1){
-                  for(walker = counter+1; walker < u.length; walker +=1){
-                    if(u[walker] === u[counter]) {
+    // Prva verzija koju sam napisao. Mnooogo je spora i ne pristupa problemu na pravi nacin.
+    function dblLinearSlow(n) {
+        if (n >= 1500) return -1; // znaci da je mnooogo sporo
+        var u = [1],
+            t = [],
+            i = 0,
+            counter = 0,
+            walker = 0,
+            oldn = 0,
+            oldern = 0;
+        for (i = 1; i < n; i += 1) {
+            u.push(2 * u[i - 1] + 1);
+            u.push(3 * u[i - 1] + 1);
+            oldern = oldn;
+            oldn = u[n];
+            //Bubble Sort samo drugu polovinu niza
+            for (counter = Math.floor(u.length / 2); counter < u.length - 1; counter += 1) {
+                for (walker = counter + 1; walker < u.length; walker += 1) {
+                    if (u[walker] === u[counter]) {
                         u.splice(walker, 1);
                         continue;
                     };
-                    if(u[walker] < u[counter]){
-                      t[0] = u[counter]; u[counter] = u[walker]; u[walker] = t[0];};};};
-                if (u.length >= n+1) {
-                    if ((u[n] === oldn) && (u[n] === oldern)) break;};
-            };
-            document.getElementById("unetiPodatak").innerHTML = document.getElementById("poljeZaUnos").value;
-            var tmpEl = document.createElement("P");
-            var tekst = document.createTextNode("Bubble Sort:".concat(u.join(", ")));
-            tmpEl.appendChild(tekst);
-            document.getElementById("liste").appendChild(tmpEl);
-            if (document.getElementById("liste").style.visibility != "visible") document.getElementById("liste").style.visibility = "visible";
-            return u[n];
-        };
-
-        // Druga verzija. Mnooogo je brza od prve ali i dalje mislim da nije pravi pristup.
-        function dblLinearFast(n) {
-            var index = 0, u = [1], oldn = 0, oldern = 0;
-            for(index = 1; index < n; index += 1){
-                u.push(2*u[index-1]+1);
-                u.push(3*u[index-1]+1);
-                    oldern = oldn;
-                    oldn = u[n];
-//                console.log(index + " - " + u + " - " + u.length + "elemenata");
-                for (var i = u.length-3; i > 0; i -= 1){
-                    if(u[i] === u[u.length-1]) {
-                        u.splice(u.length-1, 1);
-                        if(u[i] === u[u.length-1]) u.splice(u.length-1, 1);
-                        break; };
-                    if(u[i] === u[u.length-2]) {
-                        u.splice(u.length-2, 1);
-                        break; };
-                };
-                //Quick Sort samo drugu polovinu niza
-                var newU = (function quickSort(list, left, right){
-                    var i = left, j = right;
-                    // definisi nasumicno mesto preloma niza za sortiranje
-                    var mestoPreloma = left+Math.floor(Math.random()*(right+1-left));
-                    var x = list[mestoPreloma];
-                    // pronadji elemente za zamenu tako da su manji na levoj a veci na desnoj strani
-                    while (i <= j) { // kada i===j, treba uporediti da bi se utvrdilo da li prebaciti levo ili desno
-                        while (list[i] < x) { i++; }; // dok je tacno ne radi nista element je u pravoj grupi
-                        while (x < list[j]) { j--; }; // dok je tacno ne radi nista element je u pravoj grupi
-                        if (i < j) { // ovde smo ako je list[i] ili list[j] ili oba van redosleda
-                            var temp = list[i];
-                            list[i] = list[j];
-                            list[j] = temp;
-                            i++;
-                            j--; }
-                        else if (i === j) { // u ovom slucaju ne treba zamena
-                            i++;
-                            j--; };
+                    if (u[walker] < u[counter]) {
+                        t[0] = u[counter];
+                        u[counter] = u[walker];
+                        u[walker] = t[0];
                     };
-                    // Sada bi trebalo da je sve od left do j manje ili jednako prelomnoj vrednosti
-                    // a sve od i do right da je vece ili jednako prelomnoj vrednosti.
-                    if (left < j) {
-                        quickSort(list, left, j); };
-                    if (i < right) {
-                        quickSort(list, i, right); };
-                    return list;
-                })(u, Math.ceil(u.length/2), u.length-1);
-                if (newU.length >= n+1) {
-                    if ((newU[n] === oldn) && (newU[n] === oldern)) break; };
+                };
             };
-            document.getElementById("unetiPodatak").innerHTML = document.getElementById("poljeZaUnos").value;
-            var tmpEl = document.createElement("P");
-            var tekst = document.createTextNode("Quick Sort:".concat(newU.join(", ")));
-            tmpEl.appendChild(tekst);
-            document.getElementById("liste").appendChild(tmpEl);
-            if (document.getElementById("liste").style.visibility != "visible") document.getElementById("liste").style.visibility = "visible";
-            return u[n];
+            if (u.length >= n + 1) {
+                if ((u[n] === oldn) && (u[n] === oldern)) break;
+            };
         };
+        document.getElementById("unetiPodatak").innerHTML = document.getElementById("poljeZaUnos").value;
+        var tmpEl = document.createElement("P");
+        var tekst = document.createTextNode("Bubble Sort:".concat(u.join(", ")));
+        tmpEl.appendChild(tekst);
+        document.getElementById("liste").appendChild(tmpEl);
+        if (document.getElementById("liste").style.display != "block") document.getElementById("liste").style.display = "block";
+        return u[n];
+    };
 
-        // Treca verzija. Najbrza je i izgleda da je tu negde pravi put.
-        function dblLinearRev(n) {
-            var u = [1], t = [], i = 0, counter = 0, oldn = 0, oldern = 0, nasao1 = 0, nasao2 = 0;
-            for(i = 1; i < n; i += 1){ // osnovna petlja ide max do n mada se uvek prekida u daljem kodu
-                u.push(2*u[i-1]+1);
-                u.push(3*u[i-1]+1);
-                oldern = oldn;
-                oldn = u[n];
-                nasao1 = 0; nasao2 = 0;
-                //Sort samo kraj niza od kraja, maximalno do polovine za svaki slucaj
-                // sa proverom duplikata.
-                for(counter = u.length-3; counter > Math.floor(u.length/2); counter -= 1){
-                    if ((counter < 0) || (nasao1 && nasao2)) break;
+    // Druga verzija. Mnooogo je brza od prve ali i dalje mislim da nije pravi pristup.
+    function dblLinearFast(n) {
+        var index = 0,
+            u = [1],
+            oldn = 0,
+            oldern = 0;
+        for (index = 1; index < n; index += 1) {
+            u.push(2 * u[index - 1] + 1);
+            u.push(3 * u[index - 1] + 1);
+            oldern = oldn;
+            oldn = u[n];
+            //                console.log(index + " - " + u + " - " + u.length + "elemenata");
+            for (var i = u.length - 3; i > 0; i -= 1) {
+                if (u[i] === u[u.length - 1]) {
+                    u.splice(u.length - 1, 1);
+                    if (u[i] === u[u.length - 1]) u.splice(u.length - 1, 1);
+                    break;
+                };
+                if (u[i] === u[u.length - 2]) {
+                    u.splice(u.length - 2, 1);
+                    break;
+                };
+            };
+            //Quick Sort samo drugu polovinu niza
+            var newU = (function quickSort(list, left, right) {
+                var i = left,
+                    j = right;
+                // definisi nasumicno mesto preloma niza za sortiranje
+                var mestoPreloma = left + Math.floor(Math.random() * (right + 1 - left));
+                var x = list[mestoPreloma];
+                // pronadji elemente za zamenu tako da su manji na levoj a veci na desnoj strani
+                while (i <= j) { // kada i===j, treba uporediti da bi se utvrdilo da li prebaciti levo ili desno
+                    while (list[i] < x) {
+                        i++;
+                    }; // dok je tacno ne radi nista element je u pravoj grupi
+                    while (x < list[j]) {
+                        j--;
+                    }; // dok je tacno ne radi nista element je u pravoj grupi
+                    if (i < j) { // ovde smo ako je list[i] ili list[j] ili oba van redosleda
+                        var temp = list[i];
+                        list[i] = list[j];
+                        list[j] = temp;
+                        i++;
+                        j--;
+                    } else if (i === j) { // u ovom slucaju ne treba zamena
+                        i++;
+                        j--;
+                    };
+                };
+                // Sada bi trebalo da je sve od left do j manje ili jednako prelomnoj vrednosti
+                // a sve od i do right da je vece ili jednako prelomnoj vrednosti.
+                if (left < j) {
+                    quickSort(list, left, j);
+                };
+                if (i < right) {
+                    quickSort(list, i, right);
+                };
+                return list;
+            })(u, Math.ceil(u.length / 2), u.length - 1);
+            if (newU.length >= n + 1) {
+                if ((newU[n] === oldn) && (newU[n] === oldern)) break;
+            };
+        };
+        document.getElementById("unetiPodatak").innerHTML = document.getElementById("poljeZaUnos").value;
+        var tmpEl = document.createElement("P");
+        var tekst = document.createTextNode("Quick Sort:".concat(newU.join(", ")));
+        tmpEl.appendChild(tekst);
+        document.getElementById("liste").appendChild(tmpEl);
+        if (document.getElementById("liste").style.display != "block") document.getElementById("liste").style.display = "block";
+        return u[n];
+    };
 
-                    if (!nasao1 && (u[u.length-2] < u[counter]) && (u[u.length-2] > u[counter-1])) {
-                        u.splice(counter, 0, u[u.length-2]);
-                        u.splice(u.length-2, 1);
-                        nasao1 = 1;
-                        if (nasao1 && nasao2) break; }
-                    else if ( !nasao1 && (u[u.length-2] === u[counter]) ) {
-                        u.splice(u.length-2, 1);
-                        nasao1 = 1;
-                        if (nasao1 && nasao2) break; };
+    // Treca verzija. Najbrza je i izgleda da je tu negde pravi put.
+    function dblLinearRev(n) {
+        var u = [1],
+            t = [],
+            i = 0,
+            counter = 0,
+            oldn = 0,
+            oldern = 0,
+            nasao1 = 0,
+            nasao2 = 0;
+        for (i = 1; i < n; i += 1) { // osnovna petlja ide max do n mada se uvek prekida u daljem kodu
+            u.push(2 * u[i - 1] + 1);
+            u.push(3 * u[i - 1] + 1);
+            oldern = oldn;
+            oldn = u[n];
+            nasao1 = 0;
+            nasao2 = 0;
+            //Sort samo kraj niza od kraja, maximalno do polovine za svaki slucaj
+            // sa proverom duplikata.
+            for (counter = u.length - 3; counter > Math.floor(u.length / 2); counter -= 1) {
+                if ((counter < 0) || (nasao1 && nasao2)) break;
 
-                    if (!nasao2 && (u[u.length-1] < u[counter]) && (u[u.length-1] > u[counter-1])) {
-                        u.splice(counter, 0, u[u.length-1]);
-                        u.splice(u.length-1, 1);
-                        nasao2 = 1;
-                        if (nasao1 && nasao2) break; }
-                    else if (!nasao2 && (u[u.length-1] === u[counter]) ) {
-                        u.splice(u.length-1, 1);
-                        nasao2 = 1;
-                        if (nasao1 && nasao2) break;};
-
+                if (!nasao1 && (u[u.length - 2] < u[counter]) && (u[u.length - 2] > u[counter - 1])) {
+                    u.splice(counter, 0, u[u.length - 2]);
+                    u.splice(u.length - 2, 1);
+                    nasao1 = 1;
+                    if (nasao1 && nasao2) break;
+                } else if (!nasao1 && (u[u.length - 2] === u[counter])) {
+                    u.splice(u.length - 2, 1);
+                    nasao1 = 1;
+                    if (nasao1 && nasao2) break;
                 };
 
-                if (u.length >= n+1) {
-                    if ((u[n] === oldn) && (u[n] === oldern)) break;};
-            }; // end osnovne petlje
-            var tmpEl = document.createElement("P");
-            var tekst = document.createTextNode("Reverse Sort:".concat(u.join(", ")));
-            tmpEl.appendChild(tekst);
-            document.getElementById("liste").appendChild(tmpEl);
-            if (document.getElementById("liste").style.visibility != "visible") document.getElementById("liste").style.visibility = "visible";
-            return u[n];
-        };
+                if (!nasao2 && (u[u.length - 1] < u[counter]) && (u[u.length - 1] > u[counter - 1])) {
+                    u.splice(counter, 0, u[u.length - 1]);
+                    u.splice(u.length - 1, 1);
+                    nasao2 = 1;
+                    if (nasao1 && nasao2) break;
+                } else if (!nasao2 && (u[u.length - 1] === u[counter])) {
+                    u.splice(u.length - 1, 1);
+                    nasao2 = 1;
+                    if (nasao1 && nasao2) break;
+                };
 
-        function Ivan(n) {
-            var u=[1],i=0;
-            for(i;i<n-1;i+=1){
-                u=insertToArray(u,2*u[i]+1);
-                u=insertToArray(u,3*u[i]+1);
-            }
-            var tmpEl = document.createElement("P");
-            var tekst = document.createTextNode("Ivan Sort:" + u.join(", "));
-            tmpEl.appendChild(tekst);
-            document.getElementById("liste").appendChild(tmpEl);
-            return u[n];
+            };
+
+            if (u.length >= n + 1) {
+                if ((u[n] === oldn) && (u[n] === oldern)) break;
+            };
+        }; // end osnovne petlje
+        var tmpEl = document.createElement("P");
+        var tekst = document.createTextNode("Reverse Sort:".concat(u.join(", ")));
+        tmpEl.appendChild(tekst);
+        document.getElementById("liste").appendChild(tmpEl);
+        if (document.getElementById("liste").style.display != "block") document.getElementById("liste").style.display = "block";
+        return u[n];
+    };
+
+    function Ivan(n) {
+        var u = [1],
+            i = 0;
+        for (i; i < n - 1; i += 1) {
+            u = insertToArray(u, 2 * u[i] + 1);
+            u = insertToArray(u, 3 * u[i] + 1);
         }
+        var tmpEl = document.createElement("P");
+        var tekst = document.createTextNode("Ivan Sort:" + u.join(", "));
+        tmpEl.appendChild(tekst);
+        document.getElementById("liste").appendChild(tmpEl);
+        return u[n];
+    }
 
-        function insertToArray(a,d){
-            var l=a.length;
-            for(l;l>0;l-=1){
-                if(a[l-1] === d){
-                    break;
-                }
-                if(a[l-1] < d){
-                    a.splice(l, 0, d);
-                    break;
-                }
+    function insertToArray(a, d) {
+        var l = a.length;
+        for (l; l > 0; l -= 1) {
+            if (a[l - 1] === d) {
+                break;
             }
-            return a;
+            if (a[l - 1] < d) {
+                a.splice(l, 0, d);
+                break;
+            }
         }
+        return a;
+    }
 
-        function clickGo(){
-            var unetiString = function cleanup(str){
-                return (str.trim().charAt(str.trim().length-1) === ",")?cleanup(str.trim().slice(0, str.trim().length-1)): str.trim();
-            }(document.getElementById("poljeZaUnos").value);
-            document.getElementById("poljeZaUnos").value = unetiString;
-           /* var vremePocetka = Date.now();
-            document.getElementById("resultat").innerHTML = "Bubble Sort - ".concat(dblLinearSlow(Number(unetiString)));
-            var vremeKraja = Date.now();
-            document.getElementById("vreme").innerHTML = "Bubble Sort - ".concat(((vremeKraja - vremePocetka) / 1000 < 1)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s");
-            var vremePocetka = Date.now();
-            document.getElementById("resultat").innerHTML = document.getElementById("resultat").innerHTML.concat(" | Quick Sort - ", dblLinearFast(Number(unetiString)));
-            var vremeKraja = Date.now();
-            document.getElementById("vreme").innerHTML = document.getElementById("vreme").innerHTML.concat(" | Quick Sort - ", ((vremeKraja - vremePocetka) / 1000 < 1)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s");
-            var vremePocetka = Date.now();
-            document.getElementById("resultat").innerHTML = document.getElementById("resultat").innerHTML.concat(" | Reverse Sort - ", dblLinearRev(Number(unetiString)));
-            var vremeKraja = Date.now();*/
-            var vremePocetka = Date.now();
-            document.getElementById("resultat").innerHTML = document.getElementById("resultat").innerHTML + (" | Ivan Sort - " + Ivan(Number(unetiString)));
-            var vremeKraja = Date.now();
-            document.getElementById("vreme").innerHTML = document.getElementById("vreme").innerHTML.concat(" | Reverse Sort - ", ((vremeKraja - vremePocetka) / 1000 < 1)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s");
-            document.getElementById("resenja").style.maxHeight = "220px";
-            document.getElementById("resenja").style.visibility = "visible";
-            document.getElementById("resenja").scrollIntoView();
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        /* var vremePocetka = Date.now();
+         document.getElementById("resultat").innerHTML = "Bubble Sort - ".concat(dblLinearSlow(Number(unetiString)));
+         var vremeKraja = Date.now();
+         document.getElementById("vreme").innerHTML = "Bubble Sort - ".concat(((vremeKraja - vremePocetka) / 1000 < 1)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s");
+         var vremePocetka = Date.now();
+         document.getElementById("resultat").innerHTML = document.getElementById("resultat").innerHTML.concat(" | Quick Sort - ", dblLinearFast(Number(unetiString)));
+         var vremeKraja = Date.now();
+         document.getElementById("vreme").innerHTML = document.getElementById("vreme").innerHTML.concat(" | Quick Sort - ", ((vremeKraja - vremePocetka) / 1000 < 1)?(vremeKraja - vremePocetka)+"ms":((vremeKraja - vremePocetka) / 1000)+"s");
+         var vremePocetka = Date.now();
+         document.getElementById("resultat").innerHTML = document.getElementById("resultat").innerHTML.concat(" | Reverse Sort - ", dblLinearRev(Number(unetiString)));
+         var vremeKraja = Date.now();*/
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = document.getElementById("resultat").innerHTML + (" | Ivan Sort - " + Ivan(Number(unetiString)));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = document.getElementById("vreme").innerHTML.concat(" | Reverse Sort - ", ((vremeKraja - vremePocetka) / 1000 < 1) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s");
+        document.getElementById("resenja").style.maxHeight = "220px";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resenja").scrollIntoView();
+    };
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    };
+
+    function clickRandom() {
+        brTestova++;
+        /*
+                    var gen = "", tmpArr = [];
+                    for(var N = 2; N <= Math.floor(Math.random()*100000+1); N+=1 ){
+                        tmpArr.push(Math.floor(Math.random()*2000+1)-1000); };
+
+                    gen = tmpArr.join(", "); */
+
+        gen = Math.floor(Math.random() * 69999 + 1);
+
+        document.getElementById("poljeZaUnos").value = gen;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = gen;
+            document.getElementById("testVrednosti").style.display = "block";
         };
+    };
+</script>
 
-        function enterGo(event){ if (event.keyCode === 13) clickGo(); };
-
-        function clickRandom(){
-            brTestova++;/*
-            var gen = "", tmpArr = [];
-            for(var N = 2; N <= Math.floor(Math.random()*100000+1); N+=1 ){
-                tmpArr.push(Math.floor(Math.random()*2000+1)-1000); };
-
-            gen = tmpArr.join(", "); */
-
-            gen = Math.floor(Math.random()*69999+1);
-
-            document.getElementById("poljeZaUnos").value = gen;
-            if (brTestova > 3){
-                document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
-                document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
-                document.getElementById("test3").innerHTML = gen; }
-            else {
-                var noviElement = document.createElement("LI");
-                noviElement.id = "test"+brTestova;
-                document.getElementById("listaVrednosti").appendChild(noviElement);
-                document.getElementById("test"+brTestova).innerHTML = gen;
-                document.getElementById("testVrednosti").style.maxHeight = "100%"
-                document.getElementById("testVrednosti").style.visibility = "visible"; };
-        };
-    </script>
 </html>

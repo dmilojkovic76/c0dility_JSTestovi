@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 2-2 - OddOccurrencesInArray</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 2-2 - OddOccurrencesInArray</h1>
+            <h4>Find value that occurs in odd number of elements.</h4>
+            <p>A non-empty zero-indexed array A consisting of N integers is given. The array contains an odd number of elements, and each element of the array can be paired with another element that has the same value, except for one element that is left
+                unpaired.
+            </p>
+            <p>Given an array A consisting of N integers fulfilling the above conditions, returns the value of the unpaired element.</p>
+            <p>Assume that:</p>
+            <ul>
+                <li>N is an odd integer within the range [1..1,000,000];</li>
+                <li>each element of array A is an integer within the range [1..1,000,000,000];</li>
+                <li>all but one of the values in A occur an even number of times.</li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom , : <input id="poljeZaUnos" onkeypress="enterGo(event)"><button onclick="clickGo()">GO!</button> <button onclick="clickRandom()">Insert Random</button> <button onclick="clickRandom(9)">Insert Mali Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Broj elemenata : <span id="N"></span>, rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    /** 66% reseno
+     * treba da ubrzam nekako ovu funkciju sa O(N**N) na O(N) time complexity.
+     */
+    function solution(A) {
+        document.getElementById("unetiPodatak").innerHTML = "A[" + A.toString() + "]";
+        document.getElementById("N").innerHTML = A.length;
+        var vremePocetka = Date.now();
+        var duzina = A.length,
+            i = 1;
+        while (duzina > 1) {
+            if (A[0] === A[i]) {
+                A.splice(i, 1);
+                A.splice(0, 1);
+                duzina -= 2;
+                i = 1;
+                if (duzina === 1) {
+                    break;
+                }
+            } else {
+                i += 1;
+                if (i === duzina) {
+                    break;
+                }
+            }
+            if ((Date.now()) - vremePocetka > 5000) {
+                alert("Predugo traje!\nPreko 5sec");
+                break;
+            }
+        }
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        return A[0];
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resultat").scrollIntoView();
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) {
+            clickGo();
+        }
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var gen = "",
+            tmpArr = [],
+            rnd = 0;
+
+        if (arguments.length > 0) {
+            rnd = arguments[0];
+            if (rnd % 2 === 0) {
+                rnd += 1;
+                alert("Greška!", "Broj mora da bude neparan i veći od 3!\nUmesto unetog broja koristiće se: " + rnd);
+            }
+        } else {
+            rnd = randBroj(3, 1000000);
+        }
+
+        for (var N = 1; N <= rnd; N += 2) {
+            if (arguments.length > 0) {
+                tmpArr.push(randBroj(1, 10));
+            } else {
+                tmpArr.push(randBroj(1, 1000000000));
+            }
+        }
+        gen = tmpArr.join(", ");
+
+        document.getElementById("poljeZaUnos").value = gen;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = tmpArr.length + " elem. - " + gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = tmpArr.length + " elem. - " + gen;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>

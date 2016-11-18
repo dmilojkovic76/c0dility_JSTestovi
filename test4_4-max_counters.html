@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 4-4 - MaxCounters</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 4-4 - MaxCounters - <em>RESPECTABLE LEVEL</em></h1>
+            <h4>Calculate the values of counters after applying all alternating operations: increase counter by 1; set value of all counters to current maximum.</h4>
+            <p>You are given N counters, initially set to 0, and you have two possible operations on them:
+                <ul>
+                    <li>increase(X) − counter X is increased by 1,</li>
+                    <li>max counter − all counters are set to the maximum value of any counter.</li>
+                </ul>
+                A non-empty zero-indexed array A of M integers is given. This array represents consecutive operations:
+                <ul>
+                    <li>if A[K] = X, such that 1 ≤ X ≤ N, then operation K is increase(X),</li>
+                    <li>if A[K] = N + 1 then operation K is max counter.</li>
+                </ul>
+            </p>
+            <p>For example, given integer N = 5 and array A such that:
+                <ul>
+                    <li>A[0] = 3</li>
+                    <li>A[1] = 4</li>
+                    <li>A[2] = 4</li>
+                    <li>A[3] = 6</li>
+                    <li>A[4] = 1</li>
+                    <li>A[5] = 4</li>
+                    <li>A[6] = 4</li>
+                </ul>
+                the values of the counters after each consecutive operation will be:
+                <ul>
+                    <li>(0, 0, 1, 0, 0)</li>
+                    <li>(0, 0, 1, 1, 0)</li>
+                    <li>(0, 0, 1, 2, 0)</li>
+                    <li>(2, 2, 2, 2, 2)</li>
+                    <li>(3, 2, 2, 2, 2)</li>
+                    <li>(3, 2, 2, 3, 2)</li>
+                    <li>(3, 2, 2, 4, 2)</li>
+                </ul>
+                The goal is to calculate the value of every counter after all operations.
+            </p>
+            <p>Given an integer N and a non-empty zero-indexed array A consisting of M integers, return a sequence of integers representing the values of the counters.<br /> The sequence should be returned as an array of integers.<br /> For example, given
+                above: A[3,4,4,6,1,4,4], the function should return array [3, 2, 2, 4, 2], as explained above.
+            </p>
+            <p>Assume that:
+                <ul>
+                    <li>N and M are integers within the range [1..100,000];</li>
+                    <li>each element of array A is an integer within the range [1..N + 1].</li>
+                </ul>
+            </p>
+            <p>Complexity:
+                <li>expected worst-case time complexity is O(N+M);</li>
+                <li>expected worst-case space complexity is O(N), beyond input storage (not counting the storage required for input arguments).</li>
+            </p>
+            <p>Elements of input arrays can be modified.</p>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi broj 'counter'-a N: <input id="poljeZaUnos1" size="2" onkeypress="enterGo(event)"> Unesi brojeve razdvojene zarezom ',' za niz A: <input id="poljeZaUnos2" onkeypress="enterGo(event)"><br /><button onclick="clickGo()">GO!</button> <button onclick="clickRandom(10)">Insert mali Random</button> <button onclick="clickRandom()">Insert full Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Broj elemenata : <span id="N"></span>, rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    function solution(N, A) {
+        return 1;
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resultat").scrollIntoView();
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var gen = "",
+            tmpArr = [];
+        for (var N = 2; N <= randBroj(1, 100000); N += 1) {
+            tmpArr.push(randBroj(1, 1000000000));
+        }
+
+        gen = tmpArr.join(", ");
+
+        document.getElementById("poljeZaUnos").value = tmpArr;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = tmpArr.length + " - " + gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = tmpArr.length + "-" + gen;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>

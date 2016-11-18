@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 1-1 - BinaryGap</title>
+    <link rel="stylesheet" href="main.min.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 1-1 - BinaryGap</h1>
+            <h4>Find longest sequence of zeros in binary representation of an integer.</h4>
+            <p>A binary gap within a positive integer N is any maximal sequence of consecutive zeros that is surrounded by ones at both ends in the binary representation of N.</p>
+            <p>For example, number 9 has binary representation 1001 and contains a binary gap of length 2. The number 529 has binary representation 1000010001 and contains two binary gaps: one of length 4 and one of length 3. The number 20 has binary representation
+                10100 and contains one binary gap of length 1. The number 15 has binary representation 1111 and has no binary gaps.</p>
+            <p>given a positive integer N, returns the length of its longest binary gap. The function should return 0 if N doesn't contain a binary gap.</p>
+            <p>For example, given N = 1041 the function should return 5, because N has binary representation 10000010001 and so its longest binary gap is of length 5.</p>
+            <p>Assume that:</p>
+            <ul>
+                <li>N is an integer within the range [1..2,147,483,647].</li>
+            </ul>
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom , : <input id="poljeZaUnos" onkeypress="enterGo(event)"><button onclick="clickGo()">GO!</button> <button onclick="clickRandom()">Insert Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: int <span id="unetiPodatak"></span> - bin <span id="bin"></span></p>
+            <p>Rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    function solution(N) {
+        document.getElementById("unetiPodatak").innerHTML = N.toString();
+        document.getElementById("bin").innerHTML = N.toString(2);
+        var vremePocetka = Date.now(),
+            binN = N.toString(2),
+            zbir = 0,
+            res = 0;
+        for (var j = 0; j < binN.length - 2; j++) {
+            if (binN.charAt(j) == 0) {
+                continue;
+            } else {
+                for (var i = j + 1; i < binN.length; i++) {
+                    if (binN.charAt(i) == 0) {
+                        zbir += 1;
+                    } else {
+                        res = Math.max(zbir, res);
+                        zbir = 0;
+                        j = i - 1;
+                        break;
+                    }
+                }
+            }
+        }
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        return res;
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString;
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(parseInt(unetiString));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+        document.getElementById("resultat").scrollIntoView();
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var BROJ = randBroj(1, 2147483647);
+
+        document.getElementById("poljeZaUnos").value = BROJ;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = BROJ;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = BROJ;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>

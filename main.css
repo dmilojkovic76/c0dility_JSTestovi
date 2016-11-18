@@ -5,51 +5,60 @@ html {
     background-image: -o-linear-gradient(270deg, rgb(230, 233, 233) 0%, rgb(216, 221, 221) 100%);
     background-image: linear-gradient(270deg, rgb(230, 233, 233) 0%, rgb(216, 221, 221) 100%);
     background-image: -ms-linear-gradient(270deg, rgb(230, 233, 233) 0%, rgb(216, 221, 221) 100%);
+
     -webkit-font-smoothing: antialiased;
 }
 
 body {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 2em;
+
+    color: #545454;
     background: #fff;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
-    color: #545454;
+
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
-    margin: 0 auto;
-    max-width: 80%;
-    padding: 2em 2em 4em;
 }
 
 h1, h2, h3, h4, h5, h6 {
     color: #222;
+
     font-weight: 600;
     line-height: 1.3;
 }
 
 .postavka {
-    display: inline-block;
     position: relative;
-    background: #e6e9e9;
-    border: 2px solid #babebe;
+
+    display: inline-block;
+
     margin: 0 auto;
-    padding: 1em 1em 2em;
+    padding: 1em;
+
+    border: 2px solid #babebe;
+    background: #e6e9e9;
 }
 
 .unos {
-    display:inline-block;
     position: relative;
+
+    display:inline-block;
 }
 
 .testVrednosti {
-    display: block;
     position: relative;
-    background: rgb(239, 239, 221);
-    border: 2px solid #d8d8ae;
+
+    display: none;
+    overflow: hidden;
+
     margin: 0 auto;
     padding: 1em 3em 2em 1em;
-    max-height: 0;
-    overflow: hidden;
-    visibility: hidden;
+
+    border: 2px solid #d8d8ae;
+    background: rgb(239, 239, 221);
 }
 
 .listaVrednosti {
@@ -58,10 +67,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .fadeoutVrednosti {
     position: absolute;
-    bottom: 0;
     right: 0;
-    height: 100%;
+    bottom: 0;
+
     width: 6em;
+    height: 100%;
+
     background: -webkit-linear-gradient0(90deg, rgba(0, 0, 0, 0) 0%, rgb(239, 239, 221) 100%);
     background-image: -moz-linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(239, 239, 221) 100%);
     background-image: -o-linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(239, 239, 221) 100%);
@@ -70,22 +81,26 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .resenja {
-    display: block;
     position: relative;
+
+    display: none;
     clear: both;
-    background: #faebd7;
-    border: 2px solid #fad5b1;
     overflow: hidden;
+
     padding: 1em 3em 2em 1em;
-    visibility: hidden;
+
+    border: 2px solid #fad5b1;
+    background: #faebd7;
 }
 
 .fadeoutResenja {
     position: absolute;
-    bottom: 0;
     right: 0;
-    height: 100%;
+    bottom: 0;
+
     width: 6em;
+    height: 100%;
+
     background: -webkit-linear-gradient0(90deg, rgba(0, 0, 0, 0) 0%, rgb(250, 235, 215) 100%);
     background-image: -moz-linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(250, 235, 215) 100%);
     background-image: -o-linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgb(250, 235, 215) 100%);
@@ -94,12 +109,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .liste {
-    display: block;
     position: relative;
+
+    display: none;
     clear: both;
-    background: #faebd7;
-    border: 2px solid #fad5b1;
     overflow: hidden;
+
     padding: 1em 3em 2em 1em;
-    visibility: hidden;
+
+    border: 2px solid #fad5b1;
+    background: #faebd7;
 }

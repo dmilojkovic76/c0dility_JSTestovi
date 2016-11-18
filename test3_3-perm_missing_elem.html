@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test 3-3 - PermMissingElem</title>
+    <link rel="stylesheet" href="main.css">
+    <meta charset="utf-8" />
+</head>
+
+<body>
+    <div>
+        <div id="postavka" class="postavka">
+            <h1>Test 3-3 - PermMissingElem</h1>
+            <h4>Find the missing element in a given permutation.</h4>
+            <p>A zero-indexed array A consisting of N different integers is given. The array contains integers in the range [1..(N + 1)], which means that exactly one element is missing.</p>
+            A[N] = [1..(N+1)]
+            <p>Given a zero-indexed array A, return the value of the missing element.</p>
+            <p>For example, given array A such that:
+                <li>A[0] = 2</li>
+                <li>A[1] = 3</li>
+                <li>A[2] = 1</li>
+                <li>A[3] = 5</li>
+            </p>
+            <p>the function should return 4, as it is the missing element.</p>
+            <p>Assume that:</p>
+            <ul>
+                <li>N is an integer within the range [0..100,000];</li>
+                <li>the elements of A are all distinct;</li>
+                <li>each element of array A is an integer within the range [1..(N + 1)].</li>
+            </ul>
+            Elements of input arrays can be modified.
+        </div>
+    </div>
+    <div>
+        <div id="unos" class="unos">
+            Unesi brojeve razdvojene zarezom , : <input id="poljeZaUnos" onkeypress="enterGo(event)"><button onclick="clickGo()">GO!</button> <button onclick="clickRandom()">Insert Random</button>
+        </div>
+        <div id="testVrednosti" class="testVrednosti">
+            <h4>Neke generisane vrednosti (poslednje 3):</h4>
+            <ul id="listaVrednosti" class="listaVrednosti">
+                <!--              <li id="test1...test5"></li> -->
+            </ul>
+            <div class="fadeoutVrednosti"></div>
+        </div>
+        <div id="resenja" class="resenja">
+            <p>Uneti podatak je: <span id="unetiPodatak"></span></p>
+            <p>Rezultat je: <span id="resultat"></span>, vreme za obradu : <span id="vreme"></span></p>
+            <div class="fadeoutResenja"></div>
+        </div>
+    </div>
+</body>
+
+<script>
+    var brTestova = 0;
+
+    /** 80% reseno; (err. Timeout); 100% correctness; 60% Performance.
+     * Treba da ubrzam funkciju da bude u O(N) a ne O(N**2) time complexity.
+     *
+     * Sledeci postupak je precica tj. formula za racunanje sume niza brojeva:
+     * 1. iterate over all elements of the array and find their 'sum'
+     * 2. return ((array.size+1)*(array.size+2)/2)-sum
+     */
+    function solution(A) {
+        document.getElementById("unetiPodatak").innerHTML = A.toString();
+        var duzArr = A.length,
+            B = A.slice();
+        if (duzArr < 1) {
+            return 1;
+        }
+        B.sort(function(a, b) {
+            return a - b;
+        });
+        for (var noviIndex = 1; noviIndex <= duzArr + 2; noviIndex += 1) {
+            if (Number(B[0]) === noviIndex) B.shift();
+            else return noviIndex;
+        }
+    }
+
+    function clickGo() {
+        var unetiString = function cleanup(str) {
+            return (str.trim().charAt(str.trim().length - 1) === ",") ? cleanup(str.trim().slice(0, str.trim().length - 1)) : str.trim();
+        }(document.getElementById("poljeZaUnos").value);
+        document.getElementById("poljeZaUnos").value = unetiString.split(",");
+        var vremePocetka = Date.now();
+        document.getElementById("resultat").innerHTML = solution(unetiString.split(","));
+        var vremeKraja = Date.now();
+        document.getElementById("vreme").innerHTML = ((vremeKraja - vremePocetka) / 1000 < 1 / 10) ? (vremeKraja - vremePocetka) + "ms" : ((vremeKraja - vremePocetka) / 1000) + "s";
+        document.getElementById("resenja").style.display = "block";
+    }
+
+    function enterGo(event) {
+        if (event.keyCode === 13) clickGo();
+    }
+
+    function randBroj(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function clickRandom() {
+        brTestova++;
+        var gen = "",
+            tmpArr = [],
+            tmpArr2 = [];
+        for (var N = 0; N <= Math.floor(Math.random() * 100000 + 1); N += 1) {
+            tmpArr2.push(N + 1);
+        }
+        tmpArr2.push(tmpArr2[tmpArr2.length - 1] + 1);
+        tmpArr2.splice(Math.floor(Math.random() * tmpArr2.length + 1), 1);
+        while (tmpArr2.length > 0) {
+            tmpArr.push(tmpArr2.splice(Math.floor(Math.random() * tmpArr2.length), 1)[0]);
+        }
+        gen = tmpArr.toString();
+
+        document.getElementById("poljeZaUnos").value = tmpArr;
+        if (brTestova > 3) {
+            document.getElementById("test1").innerHTML = document.getElementById("test2").innerHTML;
+            document.getElementById("test2").innerHTML = document.getElementById("test3").innerHTML;
+            document.getElementById("test3").innerHTML = tmpArr.length + " - " + gen;
+        } else {
+            var noviElement = document.createElement("LI");
+            noviElement.id = "test" + brTestova;
+            document.getElementById("listaVrednosti").appendChild(noviElement);
+            document.getElementById("test" + brTestova).innerHTML = tmpArr.length + "-" + gen;
+            document.getElementById("testVrednosti").style.display = "block";
+        }
+    }
+</script>
+
+</html>
